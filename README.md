@@ -1,12 +1,11 @@
-# Crowdcoin Sentinel
+@@ -0,0 +1,153 @@
+# Primestone Sentinel
 
-An all-powerful toolset for Crowdcoin.
+An all-powerful toolset for Primestone.
 
-[![Build Status](https://travis-ci.org/crowdcoinpay/sentinel.svg?branch=master)](https://travis-ci.org/crowdcoinpay/sentinel)
+Sentinel is an autonomous agent for persisting, processing and automating Primestone V12.1 governance objects and tasks.
 
-Sentinel is an autonomous agent for persisting, processing and automating Crowdcoin V12.1 governance objects and tasks, and for expanded functions in the upcoming Crowdcoin V13 release (Evolution).
-
-Sentinel is implemented as a Python application that binds to a local version 12.1 crowdcoind instance on each Crowdcoin V12.1 Masternode.
+Sentinel is implemented as a Python application that binds to a local version 12.1 primestoned instance on each Primestone V12.1 Masternode.
 
 This guide covers installing Sentinel onto an existing 12.1 Masternode in Ubuntu 14.04 / 16.04.
 
@@ -23,9 +22,9 @@ Update system packages and ensure virtualenv is installed:
     $ sudo apt-get update
     $ sudo apt-get -y install python-virtualenv
 
-Make sure the local Crowdcoin daemon running is at least version 12.1 (120100)
+Make sure the local Primestone daemon running is at least version 12.1 (120100)
 
-    $ crowdcoin-cli getinfo | grep version
+    $ primestone-cli getinfo | grep version
 
 ### 2. Install Sentinel
 
@@ -37,7 +36,7 @@ Clone the Sentinel repo and install Python dependencies.
     $ ./venv/bin/pip install -r requirements.txt
     
 
-### 2.a. Check crowdcoin.conf
+### 2.a. Check primestone.conf
 
 Change the configuration checking, and appending if missing the following
 parameters rpcuser and rpcpassword needs to be replaced
@@ -66,24 +65,24 @@ Clone the Sentinel repo and install Python dependencies.
 ### 2.b. remove old files
 Enter the wallet folder and stop the wallet
 
-    ./crowdcoin-cli stop 
+    ./primestone-cli stop 
     
-Enter the crowdcoin config folder mentioned during the installation
+Enter the primestone config folder mentioned during the installation
     
     rm mncache.dat
     rm mnpayments.dat
     
 Enter the wallet folder and restart the wallet 
 
-    ./crowdcoind -daemon -reindex
+    ./primestoned -daemon -reindex
     
 Check the sync status
 
-    watch ./crowdcoin-cli mnsync status
+    watch ./primestone-cli mnsync status
 
 As soon as you see the following response press CTRL+C
 
-    ./crowdcoin-cli mnsync status
+    ./primestone-cli mnsync status
     {
     "AssetID": 999,
     "AssetName": "MASTERNODE_SYNC_FINISHED",
@@ -97,57 +96,6 @@ As soon as you see the following response press CTRL+C
 
 Finally start the masternode
 
-    ./crowdcoin-cli masternode start
+    ./primestone-cli masternode start
 
 
-### 3. Set up Cron
-
-Set up a crontab entry to call Sentinel every minute:
-
-    $ crontab -e
-
-In the crontab editor, add the lines below, replacing '/home/YOURUSERNAME/sentinel' to the path where you cloned sentinel to:
-
-    * * * * * cd /home/YOURUSERNAME/sentinelLinux && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
-
-### 4. Test the Configuration
-
-Test the config by runnings all tests from the sentinel folder you cloned into
-
-    $ ./venv/bin/py.test ./test
-
-With all tests passing and crontab setup, Sentinel will stay in sync with crowdcoind and the installation is complete
-
-## Configuration
-
-An alternative (non-default) path to the `crowdcoin.conf` file can be specified in `sentinel.conf`:
-
-    crowdcoin_conf=/path/to/crowdcoin.conf
-
-## Troubleshooting
-
-To view debug output, set the `SENTINEL_DEBUG` environment variable to anything non-zero, then run the script manually:
-
-    $ SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py
-
-## Contributing
-
-Please follow the [CrowdcoinBrain guidelines for contributing](https://github.com/crowdcoinpay/crowdcoin/blob/v0.12.1.x/CONTRIBUTING.md).
-
-Specifically:
-
-* [Contributor Workflow](https://github.com/crowdcoinpay/crowdcoin/blob/v0.12.1.x/CONTRIBUTING.md#contributor-workflow)
-
-    To contribute a patch, the workflow is as follows:
-
-    * Fork repository
-    * Create topic branch
-    * Commit patches
-
-    In general commits should be atomic and diffs should be easy to read. For this reason do not mix any formatting fixes or code moves with actual code changes.
-
-    Commit messages should be verbose by default, consisting of a short subject line (50 chars max), a blank line and detailed explanatory text as separate paragraph(s); unless the title alone is self-explanatory (like "Corrected typo in main.cpp") then a single title line is sufficient. Commit messages should be helpful to people reading your code in the future, so explain the reasoning for your decisions. Further explanation [here](http://chris.beams.io/posts/git-commit/).
-
-### License
-
-Released under the MIT license, under the same terms as CrowdcoinBrain itself. See [LICENSE](LICENSE) for more info.
