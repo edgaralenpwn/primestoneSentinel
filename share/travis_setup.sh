@@ -1,9 +1,9 @@
 #!/bin/bash
 set -evx
 
-mkdir ~/.crowdcoinbrain
+mkdir ~/.primestonecore
 
 # safety check
-if [ ! -f ~/.crowdcoinbrain/.crowdcoin.conf ]; then
-  cp share/crowdcoin.conf.example ~/.crowdcoinbrain/crowdcoin.conf
+if [ ! -f ~/.primestonecore/.primestone.conf ]; then
+  cp share/primestone.conf.example ~/.primestonecore/primestone.conf
 fi

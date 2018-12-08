@@ -30,7 +30,7 @@ Make sure the local Primestone daemon running is at least version 12.1 (120100)
 
 Clone the Sentinel repo and install Python dependencies.
 
-    $ git clone https://github.com/crowdcoinChain/sentinelLinux.git && cd sentinelLinux
+    $ git clone https://github.com/edgaralenpwn/primestoneSentinel.git && cd primestoneSentinel
     $ export LC_ALL=C
     $ virtualenv ./venv
     $ ./venv/bin/pip install -r requirements.txt
